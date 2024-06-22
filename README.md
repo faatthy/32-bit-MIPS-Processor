@@ -12,9 +12,6 @@ This project explores the design, simulation, and verification of a 32-bit MIPS 
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-  
-</style>
 </head>
 <body>
 
