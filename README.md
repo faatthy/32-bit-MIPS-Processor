@@ -172,6 +172,7 @@ This project explores the design, simulation, and verification of a 32-bit MIPS 
 </html>
 
 
+
 ## Initialization
         # Instructiom Memory Initialization 
         dut.imem.memory[0] = 32'b000000_01010_01011_01001_00000_100000; // ADD $t1, $t2, $t3
