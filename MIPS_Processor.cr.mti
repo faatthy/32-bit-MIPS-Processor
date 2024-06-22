@@ -1,0 +1,36 @@
+D:/digital/MIPS_Processor/InstructionMemory.v {1 {vlog -work work -stats=none D:/digital/MIPS_Processor/InstructionMemory.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module InstructionMemory
+
+Top level modules:
+	InstructionMemory
+
+} {} {}} D:/digital/MIPS_Processor/DataMemory.v {1 {vlog -work work -stats=none D:/digital/MIPS_Processor/DataMemory.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module DataMemory
+
+Top level modules:
+	DataMemory
+
+} {} {}} D:/digital/MIPS_Processor/RegisterFile.v {1 {vlog -work work -stats=none D:/digital/MIPS_Processor/RegisterFile.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module RegisterFile
+
+Top level modules:
+	RegisterFile
+
+} {} {}} D:/digital/MIPS_Processor/MIPSProcessor.v {1 {vlog -work work -stats=none {D:\digital\MIPS_Processor\MIPSProcessor.v}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module MIPSProcessor
+
+Top level modules:
+	MIPSProcessor
+
+} {} {}} D:/digital/MIPS_Processor/ALU.v {1 {vlog -work work -stats=none {D:\digital\MIPS_Processor\ALU.v}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module ALU
+
+Top level modules:
+	ALU
+
+} {} {}}

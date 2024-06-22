@@ -1,0 +1,77 @@
+module ControlUnit (
+    input [5:0] opcode,
+    input [5:0] funct,
+    output reg regDst,
+    output reg aluSrc,
+    output reg memToReg,
+    output reg regWrite,
+    output reg memRead,
+    output reg memWrite,
+    output reg branch,
+    output reg [3:0] aluOp
+);
+
+    always @(*) begin
+        case (opcode)
+            6'b000000: begin // R-type
+                regDst = 1;
+                aluSrc = 0;
+                memToReg = 0;
+                regWrite = 1;
+                memRead = 0;
+                memWrite = 0;
+                branch = 0;
+                case (funct)
+                    6'b100000: aluOp = 4'b0000; // ADD
+                    6'b100010: aluOp = 4'b0001; // SUB
+                    6'b100100: aluOp = 4'b0010; // AND
+                    6'b100101: aluOp = 4'b0011; // OR
+                    6'b000000: aluOp = 4'b0100; // SLL
+                    6'b000010: aluOp = 4'b0101; // SRL
+                    6'b101010: aluOp = 4'b0110; // SLT
+                    default: aluOp = 4'b0000;   // Default to ADD
+                endcase
+            end
+            6'b100011: begin // LW
+                regDst = 0;
+                aluSrc = 1;
+                memToReg = 1;
+                regWrite = 1;
+                memRead = 1;
+                memWrite = 0;
+                branch = 0;
+                aluOp = 4'b0000; // ADD
+            end
+            6'b101011: begin // SW
+                regDst = 0; // Don't care
+                aluSrc = 1;
+                memToReg = 0; // Don't care
+                regWrite = 0;
+                memRead = 0;
+                memWrite = 1;
+                branch = 0;
+                aluOp = 4'b0000; // ADD
+            end
+            6'b000100: begin // BEQ
+                regDst = 0; // Don't care
+                aluSrc = 0;
+                memToReg = 0; // Don't care
+                regWrite = 0;
+                memRead = 0;
+                memWrite = 0;
+                branch = 1;
+                aluOp = 4'b0001; // SUB
+            end
+            default: begin
+                regDst = 0;
+                aluSrc = 0;
+                memToReg = 0;
+                regWrite = 0;
+                memRead = 0;
+                memWrite = 0;
+                branch = 0;
+                aluOp = 4'b0000;
+            end
+        endcase
+    end
+endmodule

@@ -1,0 +1,135 @@
+`timescale 1ns / 1ps
+
+module MIPSProcessor_tb;
+
+    // Parameters
+    parameter CLK_PERIOD = 10;  // Clock period in ns
+
+    // Signals
+    reg clk;
+    reg reset;
+
+    // Instantiate the MIPS Processor module
+    MIPSProcessor dut (
+        .clk(clk),
+        .reset(reset)
+    );
+    initial begin
+        $dumpfile("dump.vcd");
+        $dumpvars;
+    end
+
+    // Clock generation
+    initial begin
+        clk = 0;
+        forever #(CLK_PERIOD / 2) clk = ~clk;
+    end
+
+    // Reset generation
+    initial begin
+        reset = 1;
+        #50;
+        reset = 0;
+    end
+
+    // Test vectors
+    initial begin
+        // Initialize instruction memory with test instructions
+        dut.imem.memory[0] = 32'b000000_01010_01011_01001_00000_100000; // ADD $t1, $t2, $t3
+        dut.imem.memory[1] = 32'b000000_01010_01011_01001_00000_100010; // SUB $t1, $t2, $t3
+        dut.imem.memory[2] = 32'b000000_01010_01011_01001_00000_100100; // AND $t1, $t2, $t3
+        dut.imem.memory[3] = 32'b000000_01010_01011_01001_00000_100101; // OR $t1, $t2, $t3
+        dut.imem.memory[4] = 32'b000000_01010_01011_01001_00000_101010; // SLT $t1, $t2, $t3
+        dut.imem.memory[5] = 32'b100011_01010_01001_0000000000000100;   // LW $t1, 4($t2)
+        dut.imem.memory[6] = 32'b101011_01010_01001_0000000000000100;   // SW $t1, 4($t2)
+        dut.imem.memory[7] = 32'b000100_01001_01010_0000000000000010;   // BEQ $t1, $t2, 2
+
+        // Initialize register file with test data
+        dut.rf.registers[9] = 32'h00000001; // $t1
+        dut.rf.registers[10] = 32'h00000002; // $t2
+        dut.rf.registers[11] = 32'h00000003; // $t3
+
+        // Initialize data memory with test data
+        dut.dmem.memory[1] = 32'hDEADBEEF; // Address 4
+
+        // Stimulus for clock cycles
+        repeat (5) @(posedge clk); // Wait for reset
+
+        // Execute and check each instruction with delays to ensure each instruction executes fully
+        // ADD: $t1 = $t2 + $t3 = 2 + 3 = 5
+        repeat (1) @(posedge clk);
+        $display("After ADD instruction:");
+        if (dut.rf.registers[9] === 32'h00000005) begin
+            $display("ADD instruction passed!");
+        end else begin
+            $display("ADD instruction failed! Got %h", dut.rf.registers[9]);
+        end
+
+        // SUB: $t1 = $t2 - $t3 = 2 - 3 = -1 (0xFFFFFFFF)
+        repeat (2) @(posedge clk);
+        $display("After SUB instruction:");
+        if (dut.rf.registers[9] === 32'hFFFFFFFF) begin
+            $display("SUB instruction passed!");
+        end else begin
+            $display("SUB instruction failed! Got %h", dut.rf.registers[9]);
+        end
+
+        // AND: $t1 = $t2 & $t3 = 2 & 3 = 2
+        repeat (1) @(posedge clk);
+        $display("After AND instruction:");
+        if (dut.rf.registers[9] === 32'h00000002) begin
+            $display("AND instruction passed!");
+        end else begin
+            $display("AND instruction failed! Got %h", dut.rf.registers[9]);
+        end
+
+        // OR: $t1 = $t2 | $t3 = 2 | 3 = 3
+        repeat (1) @(posedge clk);
+        $display("After OR instruction:");
+        if (dut.rf.registers[9] === 32'h00000003) begin
+            $display("OR instruction passed!");
+        end else begin
+            $display("OR instruction failed! Got %h", dut.rf.registers[9]);
+        end
+
+        
+        // SLT: $t1 = ($t2 < $t3) ? 1 : 0 = (2 < 3) ? 1 : 0 = 1
+        repeat (1) @(posedge clk);
+        $display("After SLT instruction:");
+        if (dut.rf.registers[9] === 32'h00000001) begin
+            $display("SLT instruction passed!");
+        end else begin
+            $display("SLT instruction failed! Got %h", dut.rf.registers[9]);
+        end
+
+        // LW: $t1 = mem[$t2 + 4] = mem[2 + 4] = DEADBEEF
+        repeat (1) @(posedge clk);
+        $display("After LW instruction:");
+        if (dut.rf.registers[9] === 32'hDEADBEEF) begin
+            $display("LW instruction passed!");
+        end else begin
+            $display("LW instruction failed! Got %b", dut.rf.registers[9]);
+        end
+
+        // SW: mem[$t2 + 4] = $t1 = DEADBEEF
+        repeat (1) @(posedge clk);
+        if (dut.dmem.memory[1] === 32'hDEADBEEF) begin
+            $display("SW instruction passed!");
+        end else begin
+            $display("SW instruction failed! Got %h", dut.dmem.memory[1]);
+        end
+        // BEQ: if ($t2 == $t3) PC += 4 * offset; otherwise, PC += 4
+        // Since $t2 != $t2, PC should be PC + 4 + 4
+        repeat (1) @(posedge clk);
+        $display("After BEQ instruction:");
+        if (dut.pc === 32'h0000020) begin
+            $display("BEQ instruction passed!");
+        end else begin
+            $display("BEQ instruction failed! Got %d", dut.pc);
+        end
+        // End simulation after tests
+        $stop;
+    end
+
+endmodule
+

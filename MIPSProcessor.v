@@ -1,0 +1,92 @@
+module MIPSProcessor (
+    input clk,
+    input reset
+);
+    // Signals
+    wire [31:0] pc;
+    wire [31:0] nextPc;
+    wire [31:0] instruction;
+    wire [4:0] readReg1, readReg2, writeReg;
+    wire [31:0] readData1, readData2, writeData;
+    wire [31:0] signExtImm, aluSrcB, aluResult, memReadData;
+    wire [3:0] aluControl;
+    wire zero, regDst, aluSrc, memToReg, regWrite, memRead, memWrite, branch;
+    
+    // Program Counter
+    reg [31:0] pcReg;
+    always @(posedge clk or posedge reset) begin
+        if (reset)
+            pcReg <= 0;
+        else
+            pcReg <= nextPc;
+    end
+    assign pc = pcReg;
+
+    // Instruction Memory
+    InstructionMemory imem (
+        .address(pc),
+        .instruction(instruction)
+    );
+
+    // Control Unit
+    ControlUnit control (
+        .opcode(instruction[31:26]),
+        .funct(instruction[5:0]),  // Include funct field for R-type instructions
+        .regDst(regDst),
+        .aluSrc(aluSrc),
+        .memToReg(memToReg),
+        .regWrite(regWrite),
+        .memRead(memRead),
+        .memWrite(memWrite),
+        .branch(branch),
+        .aluOp(aluControl)
+    );
+
+    // Register File
+    assign readReg1 = instruction[25:21];
+    assign readReg2 = instruction[20:16];
+    assign writeReg = (regDst) ? instruction[15:11] : instruction[20:16];
+
+    RegisterFile rf (
+        .clk(clk),
+        .regWrite(regWrite),
+        .readReg1(readReg1),
+        .readReg2(readReg2),
+        .writeReg(writeReg),
+        .writeData(writeData),
+        .readData1(readData1),
+        .readData2(readData2)
+    );
+
+    // Sign Extend
+    assign signExtImm = {{16{instruction[15]}}, instruction[15:0]};
+
+    // ALU
+    assign aluSrcB = (aluSrc) ? signExtImm : readData2;
+
+    ALU alu (
+        .A(readData1),
+        .B(aluSrcB),
+        .ALUControl(aluControl),
+        .ALUResult(aluResult),
+        .Zero(zero)
+    );
+
+    // Data Memory
+    DataMemory dmem (
+        .clk(clk),
+        .memRead(memRead),
+        .memWrite(memWrite),
+        .address(aluResult),
+        .writeData(readData2),
+        .readData(memReadData)
+    );
+
+    // Write Back
+    assign writeData = (memToReg) ? memReadData : aluResult;
+
+    // PC Update
+    assign nextPc = pc + 4 + ((branch && zero) ? (signExtImm << 2) : 0);
+
+endmodule
+
