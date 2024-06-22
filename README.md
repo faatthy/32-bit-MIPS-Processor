@@ -193,11 +193,11 @@ This project explores the design, simulation, and verification of a 32-bit MIPS 
 
 ## Test Cases Results
 
-. After ADD instruction:                     ADD instruction passed!
-. After SUB instruction:                     SUB instruction passed!
-. After AND instruction:                     AND instruction passed!
+. After ADD instruction:                     ADD instruction passed!  
+. After SUB instruction:                     SUB instruction passed!   
+. After AND instruction:                     AND instruction passed!       
 . After OR instruction:                      OR instruction passed!
-. After SLT instruction:                     SLT instruction passed!
-. After LW instruction:                      LW instruction passed!
-. After SW instruction:                      SW instruction passed!
-. After BEQ instruction:                     BEQ instruction passed!
+. After SLT instruction:                     SLT instruction passed!    
+. After LW instruction:                      LW instruction passed!   
+. After SW instruction:                      SW instruction passed!     
+. After BEQ instruction:                     BEQ instruction passed!    
