@@ -167,3 +167,40 @@ This project explores the design, simulation, and verification of a 32-bit MIPS 
     <td>X</td>
     <td>000110</td>
     <td>Reg[rd]= Reg[rt] <br>
+
+## Initialization
+        Instructiom Memory Initialization 
+        dut.imem.memory[0] = 32'b000000_01010_01011_01001_00000_100000; // ADD $t1, $t2, $t3
+        dut.imem.memory[1] = 32'b000000_01010_01011_01001_00000_100010; // SUB $t1, $t2, $t3
+        dut.imem.memory[2] = 32'b000000_01010_01011_01001_00000_100100; // AND $t1, $t2, $t3
+        dut.imem.memory[3] = 32'b000000_01010_01011_01001_00000_100101; // OR $t1, $t2, $t3
+        dut.imem.memory[4] = 32'b000000_01010_01011_01001_00000_101010; // SLT $t1, $t2, $t3
+        dut.imem.memory[5] = 32'b100011_01010_01001_0000000000000100;   // LW $t1, 4($t2)
+        dut.imem.memory[6] = 32'b101011_01010_01001_0000000000000100;   // SW $t1, 4($t2)
+        dut.imem.memory[7] = 32'b000100_01001_01010_0000000000000010;   // BEQ $t1, $t2, 2
+
+        Register File Initialization 
+        dut.rf.registers[9] = 32'h00000001; // $t1
+        dut.rf.registers[10] = 32'h00000002; // $t2
+        dut.rf.registers[11] = 32'h00000003; // $t3
+## Waveform
+
+![image](https://github.com/faatthy/32-bit-MIPS-Processor/assets/110846097/10c4d3d3-ae0a-42ef-87fd-a529d17f97d2)
+
+## Test Cases Results
+
+# After ADD instruction:
+# ADD instruction passed!
+# After SUB instruction:
+# SUB instruction passed!
+# After AND instruction:
+# AND instruction passed!
+# After OR instruction:
+# OR instruction passed!
+# After SLT instruction:
+# SLT instruction passed!
+# After LW instruction:
+# LW instruction passed!
+# SW instruction passed!
+# After BEQ instruction:
+# BEQ instruction passed!
