@@ -9,7 +9,6 @@ This project explores the design, simulation, and verification of a 32-bit MIPS 
 ![obrazek](https://github.com/faatthy/32-bit-MIPS-Processor/assets/110846097/86bc9175-4ae6-46ae-8b94-4609f5d394fa)
 
 ## Instructions Set
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -171,6 +170,7 @@ This project explores the design, simulation, and verification of a 32-bit MIPS 
 
 </body>
 </html>
+
 
 ## Initialization
         # Instructiom Memory Initialization 
