@@ -27,6 +27,16 @@ This project explores the design, simulation, and verification of a 32-bit MIPS 
 <body>
 
 <table style="width:100%">
+  <caption>Bits Used Per Instruction</caption>
+  <tr>
+    <th></th>
+    <th>6 bits</th>
+    <th>5 bits</th>
+    <th>5 bits</th>
+    <th colspan="2">5 bits</th>
+    <th>6 bits</th>
+    <th>Total of 32 bits</th>
+  </tr>
   <tr>
     <th>Inst.</th>
     <th>Opcode</th>
@@ -35,10 +45,20 @@ This project explores the design, simulation, and verification of a 32-bit MIPS 
     <th>rd</th>
     <th>shamt</th>
     <th>funct</th>
-    <th>Expression</th>
+    <th></th>
   </tr>
   <tr>
-    <td>add</td>
+    <th></th>
+    <th></th>
+    <th>bits</th>
+    <th>bits</th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+  <tr>
+    <th>add</th>
     <td>000000</td>
     <td>used</td>
     <td>used</td>
@@ -48,7 +68,7 @@ This project explores the design, simulation, and verification of a 32-bit MIPS 
     <td>Reg[rd]=Reg[rs]+Reg[rt]</td>
   </tr>
   <tr>
-    <td>sub</td>
+    <th>sub</th>
     <td>000000</td>
     <td>used</td>
     <td>used</td>
@@ -57,7 +77,93 @@ This project explores the design, simulation, and verification of a 32-bit MIPS 
     <td>100010</td>
     <td>Reg[rd]=Reg[rs]-Reg[rt]</td>
   </tr>
-  </table>
-
-</body>
-</html>
+  <tr>
+    <th>and</th>
+    <td>000000</td>
+    <td>used</td>
+    <td>used</td>
+    <td>used</td>
+    <td>X</td>
+    <td>100100</td>
+    <td>Reg[rd]=Reg[rs] and Reg[rt]</td>
+  </tr>
+  <tr>
+    <th>or</th>
+    <td>000000</td>
+    <td>used</td>
+    <td>used</td>
+    <td>used</td>
+    <td>X</td>
+    <td>100101</td>
+    <td>Reg[rd]=Reg[rs] or Reg[rt]</td>
+  </tr>
+  <tr>
+    <th>slt</th>
+    <td>000000</td>
+    <td>used</td>
+    <td>used</td>
+    <td>used</td>
+    <td>00000</td>
+    <td>101010</td>
+    <td>If(Reg[rs]<Reg[rt]) Reg[rd]=1  <br>
+    else 0</td>
+  </tr>
+  <tr>
+    <th>sll</th>
+    <td>000000</td>
+    <td>X</td>
+    <td>used</td>
+    <td>used</td>
+    <td>used</td>
+    <td>000000</td>
+    <td>Reg[rd]=Reg[rs]<<shamt</td>
+  </tr>
+  <tr>
+    <th>srl</th>
+    <td>000000</td>
+    <td>X</td>
+    <td>used</td>
+    <td>used</td>
+    <td>used</td>
+    <td>000010</td>
+    <td>Reg[rd]=Reg[rs]>>shamt</td>
+  </tr>
+  <tr>
+    <th>clo</th>
+    <td>011100</td>
+    <td>used</td>
+    <td>not</td>
+    <td>used</td>
+    <td>X</td>
+    <td>100001</td>
+    <td>Reg[rd]=count_ones(Reg[rs])</td>
+  </tr>
+  <tr>
+    <th>clz</th>
+    <td>011100</td>
+    <td>used</td>
+    <td>not</td>
+    <td>used</td>
+    <td>X</td>
+    <td>100000</td>
+    <td>Reg[rd]= count_zeros(Reg[rs])</td>
+  </tr>
+  <tr>
+    <th>mul</th>
+    <td>011100</td>
+    <td>used</td>
+    <td>used</td>
+    <td>used</td>
+    <td>X</td>
+    <td>000010</td>
+    <td>Reg[rd]=Reg[rs]*Reg[rt]</td>
+  </tr>
+  <tr>
+    <th>rotr</th>
+    <td>000000</td>
+    <td>used</td>
+    <td>used</td>
+    <td>used</td>
+    <td>X</td>
+    <td>000110</td>
+    <td>Reg[rd]= Reg[rt] <br>
