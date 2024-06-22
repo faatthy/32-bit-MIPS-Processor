@@ -167,7 +167,10 @@ This project explores the design, simulation, and verification of a 32-bit MIPS 
     <td>X</td>
     <td>000110</td>
     <td>Reg[rd]= Reg[rt] <br>
+</table>
 
+</body>
+</html>
 ## Initialization
         Instructiom Memory Initialization 
         dut.imem.memory[0] = 32'b000000_01010_01011_01001_00000_100000; // ADD $t1, $t2, $t3
